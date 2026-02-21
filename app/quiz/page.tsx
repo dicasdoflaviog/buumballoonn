@@ -8,9 +8,12 @@ export default function QuizStartPage() {
     const router = useRouter();
     const { resetOrder } = useOrder();
 
+    const isSubdomain = typeof window !== 'undefined' && window.location.hostname === 'quiz.buumballoon.com.br';
+    const pathPrefix = isSubdomain ? "" : "/quiz";
+
     const handleStart = () => {
         resetOrder();
-        router.push("/quiz/step1");
+        router.push(`${pathPrefix}/step1`);
     };
 
     return (

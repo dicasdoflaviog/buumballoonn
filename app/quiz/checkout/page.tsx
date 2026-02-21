@@ -3,21 +3,29 @@
 import Header from "@/components/Header";
 import { useOrder } from "@/context/OrderContext";
 import { useRouter } from "next/navigation";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function CheckoutPage() {
     const router = useRouter();
     const { state, updateServicos, setFormaPagamento, updateUpsells } = useOrder();
     const [isConfirming, setIsConfirming] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    const [pathPrefix, setPathPrefix] = useState("/quiz");
+
+    useEffect(() => {
+        setMounted(true);
+        const isSubdomain = typeof window !== 'undefined' && window.location.hostname === 'quiz.buumballoon.com.br';
+        setPathPrefix(isSubdomain ? "" : "/quiz");
+    }, []);
 
     // Dynamic Payment Logic
     const paymentToday = useMemo(() => {
-        const total = state.valores.total;
+        const total = state.valores?.total || 0;
         if (state.formaPagamento === "100") return total;
         if (state.formaPagamento === "50/50") return total * 0.5;
         return total * 0.5; // Default/Sinal
-    }, [state.valores.total, state.formaPagamento]);
+    }, [state.valores?.total, state.formaPagamento]);
 
     const paymentLabel = useMemo(() => {
         if (state.formaPagamento === "100") return "Pagamento Hoje (À Vista)";
@@ -33,7 +41,7 @@ export default function CheckoutPage() {
             // 1. Dispatch Tracking Event
             if (typeof window !== "undefined") {
                 console.log("Tracking Event: reserva_confirmada", {
-                    valorTotal: state.valores.total,
+                    valorTotal: state.valores?.total,
                     valorHoje: paymentToday,
                     formaPagamento: state.formaPagamento,
                     plano: state.planoSelecionado,
@@ -42,7 +50,7 @@ export default function CheckoutPage() {
             }
 
             setTimeout(() => {
-                router.push("/obrigado");
+                router.push(`${pathPrefix}/obrigado`);
             }, 800);
 
         } catch (error) {
@@ -85,15 +93,23 @@ export default function CheckoutPage() {
 
     const handleUpsellToggle = (key: string) => {
         if (key === "led") {
-            updateUpsells({ ledQuantidade: state.upsells.ledQuantidade > 0 ? 0 : 1 });
+            updateUpsells({ ledQuantidade: (state.upsells?.ledQuantidade || 0) > 0 ? 0 : 1 });
         } else {
-            updateUpsells({ [key]: !state.upsells[key as keyof typeof state.upsells] });
+            updateUpsells({ [key]: !state.upsells?.[key as keyof typeof state.upsells] });
         }
     };
 
+    if (!mounted) return null;
+
+    // Redirecionamento de segurança se chegar aqui via reload sem plano
+    if (mounted && !state.planoSelecionado) {
+        router.push(`${pathPrefix}/plans`);
+        return null;
+    }
+
     return (
-        <div className="bg-background-light text-slate-900 min-h-screen flex flex-col font-display overflow-x-hidden uppercase-none">
-            <Header progress={100} onBack={() => router.push("/plans")} />
+        <div className="bg-background-light text-slate-900 min-h-screen flex flex-col font-display overflow-x-hidden">
+            <Header progress={100} onBack={() => router.push(`${pathPrefix}/plans`)} />
 
             <main className="flex-1 max-w-md mx-auto w-full px-6 py-8 pb-64">
                 <motion.div
@@ -112,7 +128,7 @@ export default function CheckoutPage() {
                                 <h3 className="text-xl font-black tracking-tight">{state.planoSelecionado}</h3>
                                 <p className="text-xs text-slate-500 font-medium">{state.tipoEvento} • {state.tema}</p>
                             </div>
-                            <span className="text-xl font-bold">R$ {state.valores.valorPlano}</span>
+                            <span className="text-xl font-bold">R$ {state.valores?.valorPlano || 0}</span>
                         </div>
 
                         {/* Interactive Upsells */}
@@ -121,10 +137,10 @@ export default function CheckoutPage() {
 
                             {[
                                 { id: "guirlanda", label: "Guirlanda Orgânica", price: 40, icon: "🌿" },
-                                { id: "led", label: `LED Numérico ${state.upsells.ledQuantidade > 1 ? `(x${state.upsells.ledQuantidade})` : "(x1)"}`, price: 35 * (state.upsells.ledQuantidade || 1), icon: "💡" },
+                                { id: "led", label: `LED Numérico ${(state.upsells?.ledQuantidade || 0) > 1 ? `(x${state.upsells.ledQuantidade})` : "(x1)"}`, price: 35 * (state.upsells?.ledQuantidade || 1), icon: "💡" },
                                 { id: "mesa", label: "Mesa Decorativa", price: 30, icon: "🪄" }
                             ].map((item) => {
-                                const isChecked = item.id === "led" ? state.upsells.ledQuantidade > 0 : !!state.upsells[item.id as keyof typeof state.upsells];
+                                const isChecked = item.id === "led" ? (state.upsells?.ledQuantidade || 0) > 0 : !!state.upsells?.[item.id as keyof typeof state.upsells];
 
                                 return (
                                     <motion.div
@@ -210,7 +226,7 @@ export default function CheckoutPage() {
                                 highlight: true
                             },
                         ].map((service) => {
-                            const isSelected = !!state.servicos[service.id as keyof typeof state.servicos];
+                            const isSelected = !!state.servicos?.[service.id as keyof typeof state.servicos];
 
                             return (
                                 <motion.label
@@ -322,7 +338,7 @@ export default function CheckoutPage() {
                         <div className="flex flex-col text-left">
                             <p className="text-[10px] font-black uppercase tracking-widest opacity-40 text-slate-500">Total da Reserva</p>
                             <p className="text-3xl font-black text-slate-800">
-                                R$ {state.valores.total}
+                                R$ {state.valores?.total || 0}
                             </p>
                         </div>
                         <div className="flex flex-col text-right">

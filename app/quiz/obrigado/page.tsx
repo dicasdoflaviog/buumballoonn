@@ -117,6 +117,9 @@ ${servicesText}
 
     if (!isMounted) return null;
 
+    const isSubdomain = typeof window !== 'undefined' && window.location.hostname === 'quiz.buumballoon.com.br';
+    const pathPrefix = isSubdomain ? "" : "/quiz";
+
     const handleWhatsAppRedirect = () => {
         const url = generateWhatsAppUrl();
         window.location.href = url;
@@ -218,7 +221,7 @@ ${servicesText}
                     </button>
 
                     <button
-                        onClick={() => router.push("/")}
+                        onClick={() => router.push(`${pathPrefix}/`)}
                         className="mt-6 text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] hover:text-primary transition-colors"
                     >
                         Voltar ao Início

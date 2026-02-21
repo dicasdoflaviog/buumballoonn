@@ -16,22 +16,41 @@ export default function AdminLayout({
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<any>(null);
 
+    // Constantes de roteamento dinâmico
+    const isSubdomain = typeof window !== 'undefined' && window.location.hostname === 'appadmin.buumballoon.com.br';
+    const pathPrefix = isSubdomain ? "" : "/admin";
+
+    const isAuthPage =
+        pathname === "/admin" ||
+        pathname === "/admin/signup" ||
+        pathname === "/" ||
+        pathname === "/signup";
+
+    const menuItems = [
+        { name: "Início", path: `${pathPrefix}/dashboard`, icon: "dashboard" },
+        { name: "Financeiro", path: `${pathPrefix}/financeiro`, icon: "query_stats" },
+        { name: "Pedidos", path: `${pathPrefix}/pedidos`, icon: "shopping_bag" },
+        { name: "Produtos", path: `${pathPrefix}/produtos`, icon: "inventory_2" },
+        { name: "Ajustes", path: `${pathPrefix}/configuracoes`, icon: "settings" },
+    ];
+
     useEffect(() => {
         const checkUser = async () => {
             const { data: { session } } = await supabase.auth.getSession();
+
             if (!session) {
-                if (pathname === "/admin" || pathname === "/admin/signup") {
+                if (isAuthPage) {
                     setLoading(false);
                     return;
                 }
-                router.push("/admin");
+                router.push(isSubdomain ? "/" : "/admin");
                 return;
             }
 
             const { data: isAdmin } = await (supabase.rpc('is_admin') as any);
             if (!isAdmin) {
-                if (pathname !== "/admin" && pathname !== "/admin/signup") {
-                    router.push("/admin");
+                if (!isAuthPage) {
+                    router.push(isSubdomain ? "/" : "/admin");
                     return;
                 }
             }
@@ -41,11 +60,11 @@ export default function AdminLayout({
         };
 
         checkUser();
-    }, [router, pathname]);
+    }, [router, pathname, isAuthPage, isSubdomain]);
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
-        router.push("/admin");
+        router.push(isSubdomain ? "/" : "/admin");
     };
 
     if (loading) {
@@ -60,17 +79,9 @@ export default function AdminLayout({
         );
     }
 
-    if (pathname === "/admin" || pathname === "/admin/signup") {
+    if (isAuthPage) {
         return <>{children}</>;
     }
-
-    const menuItems = [
-        { name: "Início", path: "/admin/dashboard", icon: "dashboard" },
-        { name: "Financeiro", path: "/admin/financeiro", icon: "query_stats" },
-        { name: "Pedidos", path: "/admin/pedidos", icon: "shopping_bag" },
-        { name: "Produtos", path: "/admin/produtos", icon: "inventory_2" },
-        { name: "Ajustes", path: "/admin/configuracoes", icon: "settings" },
-    ];
 
     return (
         <div className="min-h-screen bg-[#f6f7f8] dark:bg-[#101922] font-sans antialiased flex flex-col items-center">
@@ -137,7 +148,7 @@ export default function AdminLayout({
                         {/* Center FAB for fast actions */}
                         <div className="relative -top-8">
                             <Link
-                                href="/admin/produtos"
+                                href={`${pathPrefix}/produtos`}
                                 className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center shadow-2xl shadow-primary/40 hover:scale-110 active:scale-95 transition-all border-4 border-white dark:border-[#101922]"
                             >
                                 <span className="material-symbols-outlined text-3xl font-black">add</span>

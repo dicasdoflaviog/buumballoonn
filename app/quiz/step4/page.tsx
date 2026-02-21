@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import { useOrder } from "@/context/OrderContext";
@@ -12,6 +12,14 @@ export default function Step4() {
     const [localValue, setLocalValue] = useState(state.local || "");
     const [isExiting, setIsExiting] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    const [pathPrefix, setPathPrefix] = useState("/quiz");
+
+    useEffect(() => {
+        setMounted(true);
+        const isSubdomain = typeof window !== 'undefined' && window.location.hostname === 'quiz.buumballoon.com.br';
+        setPathPrefix(isSubdomain ? "" : "/quiz");
+    }, []);
 
     const isButtonEnabled = localValue.length >= 5;
 
@@ -22,12 +30,14 @@ export default function Step4() {
         setLocal(localValue);
 
         setTimeout(() => setShowSuccess(true), 300);
-        setTimeout(() => router.push("/plans"), 1200);
+        setTimeout(() => router.push(`${pathPrefix}/plans`), 1200);
     };
+
+    if (!mounted) return null;
 
     return (
         <div className="bg-background-light text-slate-900 min-h-screen flex flex-col font-display overflow-x-hidden">
-            <Header progress={80} onBack={() => router.push("/quiz/step3")} />
+            <Header progress={80} onBack={() => router.push(`${pathPrefix}/step3`)} />
 
             <main className="flex-1 w-full max-w-md mx-auto px-6 pt-8 pb-40 relative">
                 <div className="timeline-line"></div>
@@ -81,19 +91,18 @@ export default function Step4() {
             {/* Footer Container */}
             <div className={`fixed bottom-0 left-0 right-0 p-6 bg-white/80 backdrop-blur-xl border-t border-slate-100 z-50 transition-transform duration-500 ${showSuccess ? 'translate-y-full' : 'translate-y-0'}`}>
                 <div className="max-w-md mx-auto">
-                    <motion.button
+                    <button
                         id="btn-confirm-step4"
                         onClick={handleConfirm}
                         disabled={!isButtonEnabled || isExiting}
-                        whileTap={isButtonEnabled ? { scale: 0.98 } : {}}
                         className={`w-full text-lg font-black py-5 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 ${isButtonEnabled && !isExiting
-                                ? "bg-primary text-white shadow-xl shadow-primary/20"
-                                : "bg-slate-100 text-slate-300 cursor-not-allowed"
+                            ? "bg-primary text-white shadow-xl shadow-primary/20"
+                            : "bg-slate-100 text-slate-300 cursor-not-allowed"
                             }`}
                     >
-                        Continuar para Planos
+                        {isExiting ? "Aguarde..." : "Continuar para Planos"}
                         <span className="material-symbols-outlined font-bold">arrow_forward</span>
-                    </motion.button>
+                    </button>
                 </div>
             </div>
         </div>

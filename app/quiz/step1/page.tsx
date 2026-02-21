@@ -18,12 +18,14 @@ const EVENT_TYPES = [
 export default function Step1() {
     const router = useRouter();
     const { state, setTipoEvento } = useOrder();
-    const [selected, setSelected] = useState(state.tipoEvento);
+    const [selected, setSelected] = useState(state.tipoEvento || "");
 
     const [showQuestion, setShowQuestion] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
     const [isExiting, setIsExiting] = useState(false);
     const [showFinalMessage, setShowFinalMessage] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    const [pathPrefix, setPathPrefix] = useState("/quiz");
 
     const handleInitialMessageComplete = () => {
         setTimeout(() => {
@@ -32,6 +34,10 @@ export default function Step1() {
     };
 
     useEffect(() => {
+        setMounted(true);
+        const isSubdomain = typeof window !== 'undefined' && window.location.hostname === 'quiz.buumballoon.com.br';
+        setPathPrefix(isSubdomain ? "" : "/quiz");
+
         if (showQuestion) {
             const timer = setTimeout(() => {
                 setShowOptions(true);
@@ -48,9 +54,11 @@ export default function Step1() {
             setShowFinalMessage(true);
         }, 300);
         setTimeout(() => {
-            router.push("/quiz/step2");
+            router.push(`${pathPrefix}/step2`);
         }, 1200);
     };
+
+    if (!mounted) return null;
 
     return (
         <div className="bg-background-light text-slate-900 min-h-screen flex flex-col font-display overflow-x-hidden">
@@ -168,14 +176,9 @@ export default function Step1() {
                                 : "bg-slate-200 text-slate-400 cursor-not-allowed opacity-40"
                                 }`}
                         >
-                            Confirmar Escolha
+                            {isExiting ? "Carregando..." : "Confirmar Escolha"}
                             <span className="material-symbols-outlined text-xl">send</span>
                         </motion.button>
-                        <footer className="text-center pb-2">
-                            <p className="text-[10px] uppercase tracking-wider text-slate-400 font-medium">
-                                CNPJ 44.081.435/0001-83 | © 2026 Todos os direitos reservados
-                            </p>
-                        </footer>
                     </div>
                 </div>
             )}
