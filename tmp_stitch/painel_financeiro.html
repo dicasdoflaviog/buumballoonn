@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Buum Balloon - Dashboard Financeiro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<!-- Header Section -->
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-4">
+<div class="flex items-center justify-between max-w-lg mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight">Financeiro</h1>
+<p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Buum Balloon</p>
+</div>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">visibility</span>
+</button>
+</div>
+<!-- Period Filter -->
+<div class="max-w-lg mx-auto mt-4">
+<div class="relative">
+<select class="w-full h-12 pl-4 pr-10 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium focus:ring-2 focus:ring-primary focus:border-primary appearance-none transition-all cursor-pointer">
+<option>Este Mês (Outubro)</option>
+<option>Últimos 30 dias</option>
+<option>Trimestre</option>
+<option>Hoje</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-lg mx-auto px-4 py-6 space-y-6 pb-24">
+<!-- Summary Cards Carousel-style -->
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+<p class="text-xs font-medium text-slate-500 mb-1">Faturamento</p>
+<p class="text-lg font-bold">R$ 24.500</p>
+<span class="text-[10px] text-green-500 font-bold flex items-center gap-0.5 mt-1">
+<span class="material-symbols-outlined text-xs">trending_up</span> +12%
+                </span>
+</div>
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+<p class="text-xs font-medium text-slate-500 mb-1">Custos Totais</p>
+<p class="text-lg font-bold">R$ 9.200</p>
+<span class="text-[10px] text-red-500 font-bold flex items-center gap-0.5 mt-1">
+<span class="material-symbols-outlined text-xs">trending_up</span> +4%
+                </span>
+</div>
+<div class="col-span-2 bg-green-50 dark:bg-green-900/10 p-5 rounded-xl border border-green-100 dark:border-green-900/30">
+<div class="flex justify-between items-center mb-1">
+<p class="text-sm font-medium text-green-800 dark:text-green-400">Lucro Líquido</p>
+<span class="material-symbols-outlined text-green-600">verified</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold text-green-700 dark:text-green-500">R$ 15.300</p>
+</div>
+</div>
+<div class="col-span-2 bg-white dark:bg-slate-900 p-5 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div>
+<p class="text-xs font-medium text-slate-500 mb-1">Margem Operacional</p>
+<p class="text-4xl font-black text-primary">62.4%</p>
+</div>
+<div class="h-12 w-12 rounded-full border-4 border-primary/20 border-t-primary flex items-center justify-center">
+<span class="text-[10px] font-bold text-primary">KPI</span>
+</div>
+</div>
+</div>
+<!-- Revenue vs Cost Chart Section -->
+<section class="bg-white dark:bg-slate-900 p-5 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+<h3 class="text-sm font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">bar_chart</span>
+                Receita x Custos
+            </h3>
+<div class="flex items-end justify-between h-40 gap-4 px-4">
+<!-- Simple Bar Representation -->
+<div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+<div class="w-full bg-primary rounded-t-lg" style="height: 100%"></div>
+<span class="text-[10px] font-bold text-slate-500">Receita</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+<div class="w-full bg-slate-200 dark:bg-slate-700 rounded-t-lg" style="height: 38%"></div>
+<span class="text-[10px] font-bold text-slate-500">Custos</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+<div class="w-full bg-green-400 rounded-t-lg" style="height: 62%"></div>
+<span class="text-[10px] font-bold text-slate-500">Resultado</span>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-xs">
+<span class="text-slate-500">Saldo atual em conta</span>
+<span class="font-bold text-slate-900 dark:text-white">R$ 42.150,00</span>
+</div>
+</section>
+<!-- Receivables Matrix -->
+<section class="bg-white dark:bg-slate-900 p-5 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+<h3 class="text-sm font-bold mb-4">Recebíveis</h3>
+<div class="flex items-center gap-6">
+<div class="relative w-24 h-24 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-slate-100 dark:text-slate-800" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-green-500" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251" stroke-dashoffset="38" stroke-width="8"></circle>
+</svg>
+<div class="absolute text-center">
+<p class="text-lg font-black leading-none">85%</p>
+<p class="text-[8px] uppercase font-bold text-slate-400">Recebido</p>
+</div>
+</div>
+<div class="flex-1 space-y-3">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-xs text-slate-500">Recebido</span>
+</div>
+<span class="text-xs font-bold">R$ 20.825</span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="text-xs text-slate-500">A receber</span>
+</div>
+<span class="text-xs font-bold">R$ 3.675</span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-red-500"></span>
+<span class="text-xs text-slate-500">Em atraso</span>
+</div>
+<span class="text-xs font-bold text-red-500">R$ 840</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Costs Section -->
+<section class="bg-white dark:bg-slate-900 p-5 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-sm font-bold">Custos por Tipo</h3>
+<button class="flex items-center gap-1 text-[10px] font-bold text-primary border border-primary/20 px-2 py-1 rounded-lg hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+                    NOVO CUSTO
+                </button>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-background-light dark:bg-slate-800/50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-slate-200 dark:bg-slate-700 rounded-md">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+</div>
+<div>
+<p class="text-xs font-bold">Variáveis (Materiais)</p>
+<p class="text-[10px] text-slate-500">Balões, gás hélio, fitas</p>
+</div>
+</div>
+<p class="text-xs font-bold">R$ 6.100</p>
+</div>
+<div class="flex items-center justify-between p-3 bg-background-light dark:bg-slate-800/50 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-slate-200 dark:bg-slate-700 rounded-md">
+<span class="material-symbols-outlined text-sm">home_work</span>
+</div>
+<div>
+<p class="text-xs font-bold">Fixos (Estrutura)</p>
+<p class="text-[10px] text-slate-500">Aluguel, energia, internet</p>
+</div>
+</div>
+<p class="text-xs font-bold">R$ 3.100</p>
+</div>
+</div>
+</section>
+<!-- Key Indicators Grid -->
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Ticket Médio</p>
+<p class="text-lg font-bold">R$ 345,00</p>
+</div>
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">LTV Médio</p>
+<p class="text-lg font-bold">R$ 1.280</p>
+</div>
+</div>
+<!-- Mini List: Revenue by Neighborhood -->
+<section class="bg-white dark:bg-slate-900 p-5 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+<h3 class="text-sm font-bold mb-4">Faturamento por Região</h3>
+<div class="space-y-3">
+<div class="flex justify-between items-center text-xs">
+<span class="text-slate-500">1. Centro</span>
+<span class="font-bold">R$ 8.400</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 75%"></div>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-slate-500">2. Jardim América</span>
+<span class="font-bold">R$ 5.200</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 45%"></div>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-slate-500">3. Bueno</span>
+<span class="font-bold">R$ 4.800</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 40%"></div>
+</div>
+</div>
+</section>
+<!-- Goals Section -->
+<section class="bg-white dark:bg-slate-900 p-5 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+<h3 class="text-sm font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">flag</span>
+                Metas do Mês
+            </h3>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-xs font-medium text-slate-500">Faturamento</span>
+<span class="text-xs font-bold">81%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 81.6%"></div>
+</div>
+<div class="flex justify-between mt-1">
+<span class="text-[10px] text-slate-400">R$ 24.500</span>
+<span class="text-[10px] font-bold text-slate-400">Alvo: R$ 30.000</span>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-xs font-medium text-slate-500">Lucro</span>
+<span class="text-xs font-bold">76%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden">
+<div class="bg-green-500 h-full" style="width: 76.5%"></div>
+</div>
+<div class="flex justify-between mt-1">
+<span class="text-[10px] text-slate-400">R$ 15.300</span>
+<span class="text-[10px] font-bold text-slate-400">Alvo: R$ 20.000</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 px-6 py-3 z-50">
+<div class="max-w-lg mx-auto flex justify-between items-center">
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-medium">Início</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="text-[10px] font-medium">Financeiro</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="text-[10px] font-medium">Pedidos</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Ajustes</span>
+</a>
+</div>
+</nav>
+</body></html>

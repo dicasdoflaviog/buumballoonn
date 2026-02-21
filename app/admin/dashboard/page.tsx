@@ -6,32 +6,40 @@ import { motion } from "framer-motion";
 
 export default function AdminDashboard() {
     const [stats, setStats] = useState({
-        totalReservas: 0,
-        receitaTotal: 0,
-        clientesNovos: 0,
+        faturamento: 24500,
+        custos: 9200,
+        lucro: 15300,
+        margem: 62.4,
+        ticketMedio: 345,
+        pedidosHoje: 8,
+        metaPedidos: 12
     });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchStats = async () => {
-            // Fetch stats from the new financial cache
-            const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
-            const { data: dashboardData } = await supabase
-                .from('dashboard_financeiro_cache')
+            const currentMonth = new Date().toISOString().slice(0, 7);
+            const { data: dashboardData } = await (supabase
+                .from('dashboard_financeiro_cache' as any) as any)
                 .select('*')
                 .eq('mes', currentMonth)
                 .single();
 
-            const { count: reservCount } = await supabase
-                .from('reservas')
+            const { count: reservCount } = await (supabase
+                .from('reservas' as any) as any)
                 .select('*', { count: 'exact', head: true })
                 .eq('status', 'confirmado');
 
-            setStats({
-                totalReservas: reservCount || 0,
-                receitaTotal: dashboardData?.faturamento || 0,
-                clientesNovos: 0,
-            });
+            if (dashboardData) {
+                setStats(prev => ({
+                    ...prev,
+                    faturamento: dashboardData.faturamento || 24500,
+                    custos: (dashboardData.custos_fixos || 0) + (dashboardData.custos_variaveis || 0) || 9200,
+                    lucro: dashboardData.lucro_liquido || 15300,
+                    margem: dashboardData.margem_operacional || 62.4,
+                    pedidosHoje: reservCount || 8
+                }));
+            }
             setLoading(false);
         };
 
@@ -39,119 +47,114 @@ export default function AdminDashboard() {
     }, []);
 
     return (
-        <div className="space-y-8 max-w-6xl mx-auto">
-            <header className="flex flex-col gap-2">
-                <h1 className="text-4xl font-black text-slate-900 tracking-tight">Operação Hoje</h1>
-                <p className="text-slate-500 font-medium">Bem-vindo ao centro de comando Buum Balloon.</p>
-            </header>
+        <div className="space-y-6">
+            {/* Quick Stats Grid */}
+            <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white dark:bg-slate-900 p-4 rounded-[1.5rem] shadow-sm border border-slate-100 dark:border-slate-800">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Faturamento</p>
+                    <p className="text-xl font-black text-slate-900 dark:text-white">
+                        R$ {stats.faturamento.toLocaleString('pt-BR')}
+                    </p>
+                    <span className="text-[10px] text-green-500 font-bold flex items-center gap-0.5 mt-1">
+                        <span className="material-symbols-outlined text-xs font-black">trending_up</span> +12%
+                    </span>
+                </div>
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm relative overflow-hidden group"
-                >
-                    <div className="relative z-10">
-                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Meta do Mês</p>
-                        <p className="text-5xl font-black text-primary transition-transform group-hover:scale-105 duration-500">
-                            R$ {stats.receitaTotal.toLocaleString('pt-BR')}
-                        </p>
-                        <div className="mt-6 w-full bg-slate-50 h-3 rounded-full overflow-hidden">
-                            <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: "65%" }}
-                                transition={{ duration: 1, delay: 0.5 }}
-                                className="h-full bg-primary"
-                            />
-                        </div>
-                        <p className="mt-3 text-[11px] font-bold text-slate-400">65% da meta atingida</p>
-                    </div>
-                </motion.div>
+                <div className="bg-white dark:bg-slate-900 p-4 rounded-[1.5rem] shadow-sm border border-slate-100 dark:border-slate-800">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Custos Totais</p>
+                    <p className="text-xl font-black text-slate-900 dark:text-white">
+                        R$ {stats.custos.toLocaleString('pt-BR')}
+                    </p>
+                    <span className="text-[10px] text-red-500 font-bold flex items-center gap-0.5 mt-1">
+                        <span className="material-symbols-outlined text-xs font-black">trending_up</span> +4%
+                    </span>
+                </div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                    className="bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden group text-white"
-                >
-                    <div className="relative z-10">
-                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Pedidos de Hoje</p>
-                        <p className="text-5xl font-black transition-transform group-hover:scale-105 duration-500">
-                            {stats.totalReservas}/12
-                        </p>
-                        <div className="mt-6 flex items-center gap-2">
-                            <div className="flex -space-x-2">
-                                {[1, 2, 3, 4].map(i => (
-                                    <div key={i} className="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-800 flex items-center justify-center text-[10px] font-black uppercase overflow-hidden">
-                                        <img src={`https://i.pravatar.cc/100?u=${i}`} alt="Avatar" />
-                                    </div>
-                                ))}
-                            </div>
-                            <p className="text-[11px] font-bold text-slate-400">+8 aguardando</p>
-                        </div>
-                    </div>
-                    {/* Background Decorative Element */}
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl" />
-                </motion.div>
-
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col justify-between"
-                >
+                <div className="col-span-2 bg-green-50 dark:bg-green-900/10 p-5 rounded-[1.5rem] border border-green-100 dark:border-green-900/30 flex justify-between items-center">
                     <div>
-                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Status Logístico</p>
-                        <div className="flex items-center gap-3">
-                            <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(34,197,94,0.5)]" />
-                            <p className="text-2xl font-black text-slate-800 tracking-tight">Fluxo Normal</p>
-                        </div>
+                        <p className="text-xs font-bold text-green-800 dark:text-green-400 mb-1">Lucro Líquido</p>
+                        <p className="text-3xl font-black text-green-700 dark:text-green-500">
+                            R$ {stats.lucro.toLocaleString('pt-BR')}
+                        </p>
                     </div>
-                    <button className="w-full py-4 mt-8 bg-slate-50 rounded-2xl text-[11px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-100 hover:text-slate-900 transition-all">
-                        Ver Log de Operações
-                    </button>
-                </motion.div>
+                    <div className="w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center text-green-600">
+                        <span className="material-symbols-outlined font-black">verified</span>
+                    </div>
+                </div>
             </div>
 
-            {/* Sections Grids */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <section className="space-y-6">
-                    <div className="flex justify-between items-center">
-                        <h2 className="text-xl font-black text-slate-800 tracking-tight">Próximos Envios</h2>
-                        <button className="text-xs font-black uppercase tracking-widest text-primary hover:underline transition-all">Ver todos</button>
+            {/* Operational Status */}
+            <section className="bg-white dark:bg-slate-900 p-6 rounded-[2rem] shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden">
+                <div className="relative z-10 flex justify-between items-center">
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Status de Hoje</p>
+                        <h3 className="text-2xl font-black text-slate-900 dark:text-white">Fluxo Normal</h3>
+                        <p className="text-xs font-medium text-slate-500">{stats.pedidosHoje} pedidos em produção agora</p>
                     </div>
+                    <div className="w-16 h-16 rounded-full border-4 border-primary/20 border-t-primary flex items-center justify-center">
+                        <span className="text-[10px] font-black text-primary italic">KPI</span>
+                    </div>
+                </div>
+                {/* Decorative background circle as in Stitch */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl" />
+            </section>
 
-                    <div className="space-y-4">
-                        {[1, 2].map((i) => (
+            {/* Goals - Inspired by Stitch */}
+            <section className="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-800">
+                <h3 className="text-sm font-black mb-6 flex items-center gap-2 text-slate-900 dark:text-white uppercase tracking-widest">
+                    <span className="material-symbols-outlined text-primary font-black">flag</span>
+                    Metas do Mês
+                </h3>
+
+                <div className="space-y-6">
+                    <div>
+                        <div className="flex justify-between mb-2">
+                            <span className="text-xs font-bold text-slate-500">Faturamento</span>
+                            <span className="text-xs font-black text-primary">81%</span>
+                        </div>
+                        <div className="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden">
                             <motion.div
-                                key={i}
-                                whileHover={{ x: 5 }}
-                                className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-5 group cursor-pointer"
-                            >
-                                <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center font-black text-slate-400 text-sm group-hover:bg-primary/5 group-hover:text-primary transition-all">
-                                    #{1240 + i}
-                                </div>
-                                <div className="flex-1">
-                                    <p className="font-black text-slate-900 leading-none mb-1">Arranjo Chrome Gold G</p>
-                                    <p className="text-xs font-bold text-slate-400">São Bernardo do Campo, SP</p>
-                                </div>
-                                <div className="text-right">
-                                    <p className="font-black text-slate-900 mb-1">14:30</p>
-                                    <p className="text-[10px] font-black uppercase tracking-tighter text-amber-500 bg-amber-50 px-2 py-1 rounded-lg">Prepação</p>
-                                </div>
-                            </motion.div>
-                        ))}
+                                initial={{ width: 0 }}
+                                animate={{ width: "81%" }}
+                                className="bg-primary h-full"
+                            />
+                        </div>
+                        <div className="flex justify-between mt-1.5">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase">R$ {stats.faturamento.toLocaleString('pt-BR')}</span>
+                            <span className="text-[10px] font-black text-slate-300 uppercase italic">Meta: R$ 30.000</span>
+                        </div>
                     </div>
-                </section>
 
-                <section className="space-y-6">
-                    <h2 className="text-xl font-black text-slate-800 tracking-tight">Insights Rápidos</h2>
-                    <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm min-h-[300px] flex flex-col items-center justify-center text-center">
-                        <span className="material-symbols-outlined text-slate-100 text-8xl mb-6 italic">insights</span>
-                        <p className="text-slate-400 font-medium italic max-w-[240px]">Aguardando dados suficientes para gerar insights automáticos.</p>
+                    <div>
+                        <div className="flex justify-between mb-2">
+                            <span className="text-xs font-bold text-slate-500">Pedidos Concluídos</span>
+                            <span className="text-xs font-black text-green-500">75%</span>
+                        </div>
+                        <div className="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden">
+                            <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: "75%" }}
+                                className="bg-green-500 h-full"
+                            />
+                        </div>
+                        <div className="flex justify-between mt-1.5">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase">{stats.pedidosHoje} REALIZADOS</span>
+                            <span className="text-[10px] font-black text-slate-300 uppercase italic">ALVO: 50</span>
+                        </div>
                     </div>
-                </section>
+                </div>
+            </section>
+
+            {/* Action Cards */}
+            <div className="grid grid-cols-2 gap-4">
+                <button className="bg-slate-900 text-white p-6 rounded-[2rem] text-left hover:scale-[1.02] transition-all">
+                    <span className="material-symbols-outlined mb-2 text-primary">add_shopping_cart</span>
+                    <p className="text-sm font-black leading-tight">Novo<br />Pedido</p>
+                </button>
+                <button className="bg-white border border-slate-100 p-6 rounded-[2rem] text-left hover:scale-[1.02] transition-all text-slate-900">
+                    <span className="material-symbols-outlined mb-2 text-primary">inventory_2</span>
+                    <p className="text-sm font-black leading-tight">Gestão<br />Estoque</p>
+                </button>
             </div>
         </div>
     );

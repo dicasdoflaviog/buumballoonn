@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Buum Balloon - Gestão de Pedidos</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Fixed Header -->
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3">
+<div class="max-w-5xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl">bubble</span>
+<h1 class="text-lg font-bold tracking-tight">Gestão de Pedidos</h1>
+</div>
+<button class="relative p-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-red-500"></span>
+</button>
+</div>
+</header>
+<main class="flex-1 max-w-5xl mx-auto w-full px-4 pb-32">
+<!-- Search & Quick Filters -->
+<div class="py-4 space-y-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all shadow-sm" placeholder="Buscar por ID, cliente ou kit..." type="text"/>
+</div>
+<!-- Horizontal Filter Scroll -->
+<div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
+<button class="flex-none px-4 py-2 rounded-full text-sm font-medium bg-primary text-white shadow-md shadow-primary/20">Todos</button>
+<button class="flex-none px-4 py-2 rounded-full text-sm font-medium bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-primary transition-colors">Pendente</button>
+<button class="flex-none px-4 py-2 rounded-full text-sm font-medium bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-primary transition-colors">Em Produção</button>
+<button class="flex-none px-4 py-2 rounded-full text-sm font-medium bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-primary transition-colors">Finalizado</button>
+<button class="flex-none px-4 py-2 rounded-full text-sm font-medium bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-primary transition-colors">Cancelado</button>
+</div>
+</div>
+<!-- Orders List -->
+<div class="space-y-4">
+<!-- Order Card 1 -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-3">
+<div>
+<span class="text-xs font-bold text-slate-400 uppercase tracking-wider">#BB-1024</span>
+<h3 class="text-base font-bold text-slate-900 dark:text-slate-100">João Paulo Silva</h3>
+</div>
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20">Em Produção</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span class="text-sm">15 Mai 2026</span>
+</div>
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+<span class="text-sm font-medium">Kit Impacto</span>
+</div>
+</div>
+<div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<div class="text-lg font-bold text-primary">R$ 450,00</div>
+<button class="flex items-center gap-1 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
+                        Detalhes
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Order Card 2 -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm">
+<div class="flex justify-between items-start mb-3">
+<div>
+<span class="text-xs font-bold text-slate-400 uppercase tracking-wider">#BB-1025</span>
+<h3 class="text-base font-bold text-slate-900 dark:text-slate-100">Mariana Souza</h3>
+</div>
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-200 dark:border-amber-800">Pendente</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span class="text-sm">18 Mai 2026</span>
+</div>
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+<span class="text-sm font-medium">Kit Celebra</span>
+</div>
+</div>
+<div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<div class="text-lg font-bold text-primary">R$ 280,00</div>
+<button class="flex items-center gap-1 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
+                        Detalhes
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Order Card 3 -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm opacity-80">
+<div class="flex justify-between items-start mb-3">
+<div>
+<span class="text-xs font-bold text-slate-400 uppercase tracking-wider">#BB-1023</span>
+<h3 class="text-base font-bold text-slate-900 dark:text-slate-100">Roberto Carlos</h3>
+</div>
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">Finalizado</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span class="text-sm">12 Mai 2026</span>
+</div>
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+<span class="text-sm font-medium">Kit Essencial</span>
+</div>
+</div>
+<div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<div class="text-lg font-bold text-slate-400">R$ 150,00</div>
+<button class="flex items-center gap-1 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
+                        Detalhes
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Order Card 4 -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm">
+<div class="flex justify-between items-start mb-3">
+<div>
+<span class="text-xs font-bold text-slate-400 uppercase tracking-wider">#BB-1026</span>
+<h3 class="text-base font-bold text-slate-900 dark:text-slate-100">Patrícia Lima</h3>
+</div>
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20">Em Produção</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span class="text-sm">20 Mai 2026</span>
+</div>
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+<span class="text-sm font-medium">Kit Impacto</span>
+</div>
+</div>
+<div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<div class="text-lg font-bold text-primary">R$ 520,00</div>
+<button class="flex items-center gap-1 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
+                        Detalhes
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-12 py-8 text-center text-slate-400 text-xs border-t border-slate-200 dark:border-slate-800">
+<p class="font-medium mb-1">CNPJ 44.081.435/0001-83</p>
+<p>© 2026 Buum Balloon. Todos os direitos reservados.</p>
+</footer>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 pb-safe shadow-[0_-4px_12px_rgba(0,0,0,0.05)] z-50">
+<div class="flex justify-around items-center max-w-lg mx-auto h-16 px-4">
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-medium">Dashboard</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined font-fill">assignment</span>
+<span class="text-[10px] font-bold">Pedidos</span>
+</a>
+<div class="relative -top-5">
+<button class="bg-primary text-white p-3 rounded-full shadow-lg shadow-primary/40 hover:scale-105 active:scale-95 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[10px] font-medium">Estoque</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Ajustes</span>
+</a>
+</div>
+<!-- Safe area spacer for modern mobiles -->
+<div class="h-4 bg-transparent"></div>
+</nav>
+<style>
+        .font-fill { font-variation-settings: 'FILL' 1; }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+</body></html>
