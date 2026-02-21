@@ -2,34 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 export default function AdminDashboard() {
-    const router = useRouter();
-    const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         totalReservas: 0,
         receitaTotal: 0,
         clientesNovos: 0,
     });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const checkUser = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
-                router.push("/admin");
-                return;
-            }
-
-            // Check if user is admin via is_admin function (optional client-side check)
-            const { data: isAdmin, error } = await supabase.rpc('is_admin');
-
-            if (!isAdmin || error) {
-                router.push("/admin");
-                return;
-            }
-
+        const fetchStats = async () => {
             // Fetch stats from the new financial cache
             const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
             const { data: dashboardData } = await supabase
@@ -46,78 +30,129 @@ export default function AdminDashboard() {
             setStats({
                 totalReservas: reservCount || 0,
                 receitaTotal: dashboardData?.faturamento || 0,
-                clientesNovos: 0, // Pode ser implementado depois
+                clientesNovos: 0,
             });
-
             setLoading(false);
         };
 
-        checkUser();
-    }, [router]);
-
-    const handleLogout = async () => {
-        await supabase.auth.signOut();
-        router.push("/admin");
-    };
-
-    if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-background-light">
-                <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                    className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full"
-                />
-            </div>
-        );
-    }
+        fetchStats();
+    }, []);
 
     return (
-        <div className="min-h-screen bg-background-light p-6 font-display">
-            <header className="max-w-6xl mx-auto flex justify-between items-center mb-10">
-                <div>
-                    <h1 className="text-3xl font-black text-slate-900">Dashboard</h1>
-                    <p className="text-sm font-medium text-slate-500">Gestão Buum Balloon</p>
-                </div>
-                <button
-                    onClick={handleLogout}
-                    className="px-6 py-3 rounded-2xl border-2 border-slate-100 font-bold text-slate-600 hover:bg-slate-50 transition-all flex items-center gap-2"
-                >
-                    Sair
-                    <span className="material-symbols-outlined text-sm">logout</span>
-                </button>
+        <div className="space-y-8 max-w-6xl mx-auto">
+            <header className="flex flex-col gap-2">
+                <h1 className="text-4xl font-black text-slate-900 tracking-tight">Operação Hoje</h1>
+                <p className="text-slate-500 font-medium">Bem-vindo ao centro de comando Buum Balloon.</p>
             </header>
 
-            <main className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Total Reservas</p>
-                    <p className="text-4xl font-black text-slate-800">{stats.totalReservas}</p>
-                </div>
-                <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Receita Total</p>
-                    <p className="text-4xl font-black text-primary">R$ {stats.receitaTotal}</p>
-                </div>
-                <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Status do Sistema</p>
-                    <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-                        <p className="text-xl font-bold text-slate-700">Online</p>
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm relative overflow-hidden group"
+                >
+                    <div className="relative z-10">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Meta do Mês</p>
+                        <p className="text-5xl font-black text-primary transition-transform group-hover:scale-105 duration-500">
+                            R$ {stats.receitaTotal.toLocaleString('pt-BR')}
+                        </p>
+                        <div className="mt-6 w-full bg-slate-50 h-3 rounded-full overflow-hidden">
+                            <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: "65%" }}
+                                transition={{ duration: 1, delay: 0.5 }}
+                                className="h-full bg-primary"
+                            />
+                        </div>
+                        <p className="mt-3 text-[11px] font-bold text-slate-400">65% da meta atingida</p>
                     </div>
-                </div>
-            </main>
+                </motion.div>
 
-            <section className="max-w-6xl mx-auto">
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-black text-slate-800">Reservas Recentes</h2>
-                    <button className="text-xs font-black uppercase tracking-widest text-primary hover:underline">Ver todas</button>
-                </div>
-                <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-                    <div className="p-12 text-center">
-                        <span className="material-symbols-outlined text-slate-200 text-6xl mb-4 italic">inbox</span>
-                        <p className="text-slate-400 font-medium italic">Nenhuma reserva confirmada recentemente.</p>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden group text-white"
+                >
+                    <div className="relative z-10">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Pedidos de Hoje</p>
+                        <p className="text-5xl font-black transition-transform group-hover:scale-105 duration-500">
+                            {stats.totalReservas}/12
+                        </p>
+                        <div className="mt-6 flex items-center gap-2">
+                            <div className="flex -space-x-2">
+                                {[1, 2, 3, 4].map(i => (
+                                    <div key={i} className="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-800 flex items-center justify-center text-[10px] font-black uppercase overflow-hidden">
+                                        <img src={`https://i.pravatar.cc/100?u=${i}`} alt="Avatar" />
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-[11px] font-bold text-slate-400">+8 aguardando</p>
+                        </div>
                     </div>
-                </div>
-            </section>
+                    {/* Background Decorative Element */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl" />
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col justify-between"
+                >
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Status Logístico</p>
+                        <div className="flex items-center gap-3">
+                            <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(34,197,94,0.5)]" />
+                            <p className="text-2xl font-black text-slate-800 tracking-tight">Fluxo Normal</p>
+                        </div>
+                    </div>
+                    <button className="w-full py-4 mt-8 bg-slate-50 rounded-2xl text-[11px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-100 hover:text-slate-900 transition-all">
+                        Ver Log de Operações
+                    </button>
+                </motion.div>
+            </div>
+
+            {/* Sections Grids */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <section className="space-y-6">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-xl font-black text-slate-800 tracking-tight">Próximos Envios</h2>
+                        <button className="text-xs font-black uppercase tracking-widest text-primary hover:underline transition-all">Ver todos</button>
+                    </div>
+
+                    <div className="space-y-4">
+                        {[1, 2].map((i) => (
+                            <motion.div
+                                key={i}
+                                whileHover={{ x: 5 }}
+                                className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-5 group cursor-pointer"
+                            >
+                                <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center font-black text-slate-400 text-sm group-hover:bg-primary/5 group-hover:text-primary transition-all">
+                                    #{1240 + i}
+                                </div>
+                                <div className="flex-1">
+                                    <p className="font-black text-slate-900 leading-none mb-1">Arranjo Chrome Gold G</p>
+                                    <p className="text-xs font-bold text-slate-400">São Bernardo do Campo, SP</p>
+                                </div>
+                                <div className="text-right">
+                                    <p className="font-black text-slate-900 mb-1">14:30</p>
+                                    <p className="text-[10px] font-black uppercase tracking-tighter text-amber-500 bg-amber-50 px-2 py-1 rounded-lg">Prepação</p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </section>
+
+                <section className="space-y-6">
+                    <h2 className="text-xl font-black text-slate-800 tracking-tight">Insights Rápidos</h2>
+                    <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm min-h-[300px] flex flex-col items-center justify-center text-center">
+                        <span className="material-symbols-outlined text-slate-100 text-8xl mb-6 italic">insights</span>
+                        <p className="text-slate-400 font-medium italic max-w-[240px]">Aguardando dados suficientes para gerar insights automáticos.</p>
+                    </div>
+                </section>
+            </div>
         </div>
     );
 }

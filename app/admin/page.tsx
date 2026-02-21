@@ -4,6 +4,7 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function AdminLoginPage() {
     const [email, setEmail] = useState("");
@@ -86,8 +87,16 @@ export default function AdminLoginPage() {
                         {loading ? "Entrando..." : "Acessar Painel"}
                         <span className="material-symbols-outlined font-black">login</span>
                     </button>
+
+                    <p className="text-center text-xs text-slate-500 font-medium pt-2">
+                        Novo por aqui?{" "}
+                        <Link href="/admin/signup" className="text-primary font-black hover:underline">
+                            Crie sua conta Admin
+                        </Link>
+                    </p>
                 </form>
             </motion.div>
         </div>
     );
 }
+
