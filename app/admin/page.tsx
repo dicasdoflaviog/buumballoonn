@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -12,22 +12,50 @@ export default function AdminLoginPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+    const [pathPrefix, setPathPrefix] = useState("/admin");
+
+    useEffect(() => {
+        const isSubdomain = window.location.hostname === 'appadmin.buumballoon.com.br';
+        setPathPrefix(isSubdomain ? "" : "/admin");
+
+        // Se já houver uma sessão, tenta ir para o dashboard (backup do middleware)
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                router.push(isSubdomain ? "/dashboard" : "/admin/dashboard");
+            }
+        });
+    }, [router]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (loading) return;
+
         setLoading(true);
         setError(null);
 
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
+        try {
+            const { error, data } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
 
-        if (error) {
-            setError(error.message);
+            if (error) {
+                setError(error.message);
+                setLoading(false);
+            } else if (data.session) {
+                // Pequeno delay para garantir que o cookie seja processado pelo browser
+                // antes da navegação que acionará o middleware
+                setTimeout(() => {
+                    const dashboardPath = pathPrefix === "" ? "/dashboard" : "/admin/dashboard";
+                    router.push(dashboardPath);
+                    // Não dar setLoading(false) aqui para manter o estado visual até trocar de página
+                }, 500);
+            } else {
+                setLoading(false);
+            }
+        } catch (err: any) {
+            setError("Ocorreu um erro inesperado.");
             setLoading(false);
-        } else {
-            router.push("/admin/dashboard");
         }
     };
 
@@ -57,7 +85,7 @@ export default function AdminLoginPage() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full px-4 py-4 rounded-2xl border-2 border-slate-100 outline-none focus:border-primary transition-all font-bold text-slate-800 bg-slate-50/50"
-                            placeholder="admin@buumballoon.com"
+                            placeholder="seu@email.com"
                         />
                     </div>
 
@@ -90,7 +118,7 @@ export default function AdminLoginPage() {
 
                     <p className="text-center text-xs text-slate-500 font-medium pt-2">
                         Novo por aqui?{" "}
-                        <Link href="/admin/signup" className="text-primary font-black hover:underline">
+                        <Link href={`${pathPrefix}/signup`} className="text-primary font-black hover:underline">
                             Crie sua conta Admin
                         </Link>
                     </p>
@@ -99,4 +127,3 @@ export default function AdminLoginPage() {
         </div>
     );
 }
-

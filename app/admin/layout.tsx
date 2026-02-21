@@ -20,6 +20,7 @@ export default function AdminLayout({
     const isSubdomain = typeof window !== 'undefined' && window.location.hostname === 'appadmin.buumballoon.com.br';
     const pathPrefix = isSubdomain ? "" : "/admin";
 
+    // Detecta se é uma rota de autenticação (não precisa de proteção de admin)
     const isAuthPage =
         pathname === "/admin" ||
         pathname === "/admin/signup" ||
@@ -36,33 +37,47 @@ export default function AdminLayout({
 
     useEffect(() => {
         const checkUser = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
+            try {
+                // Pegamos a sessão atual. Se o login acabou de ocorrer, o createBrowserClient deve ver.
+                const { data: { session } } = await supabase.auth.getSession();
 
-            if (!session) {
-                if (isAuthPage) {
-                    setLoading(false);
-                    return;
-                }
-                router.push(isSubdomain ? "/" : "/admin");
-                return;
-            }
-
-            const { data: isAdmin } = await (supabase.rpc('is_admin') as any);
-            if (!isAdmin) {
-                if (!isAuthPage) {
+                if (!session) {
+                    if (isAuthPage) {
+                        setLoading(false);
+                        return;
+                    }
+                    // Redireciona para login se não houver sessão
                     router.push(isSubdomain ? "/" : "/admin");
                     return;
                 }
-            }
 
-            setUser(session.user);
-            setLoading(false);
+                // Se houver sessão, verifica se é ADMIN
+                const { data: isAdmin, error: rpcError } = await (supabase.rpc('is_admin') as any);
+
+                if (rpcError || !isAdmin) {
+                    console.error("Admin check failed or user is not admin:", rpcError);
+                    // Se estiver em uma página protegida e não for admin, desloga e manda pro login
+                    if (!isAuthPage) {
+                        await supabase.auth.signOut();
+                        router.push(isSubdomain ? "/" : "/admin");
+                        return;
+                    }
+                }
+
+                // Se chegou aqui, está tudo OK ou está na página de login já logado (o middleware cuida disso)
+                setUser(session.user);
+                setLoading(false);
+            } catch (err) {
+                console.error("Erro no checkUser:", err);
+                setLoading(false);
+            }
         };
 
         checkUser();
     }, [router, pathname, isAuthPage, isSubdomain]);
 
     const handleLogout = async () => {
+        setLoading(true);
         await supabase.auth.signOut();
         router.push(isSubdomain ? "/" : "/admin");
     };
