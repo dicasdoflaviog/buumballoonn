@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html class="" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Buum Balloon Quiz - Passo 4</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff9289", "background-light": "#f8f6f5", "background-dark": "#23100f"}, fontFamily: {display: "Montserrat"}, borderRadius: {DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .option-card:active {
+            transform: scale(0.98);
+            border-color: #f90657;
+        }
+        .option-card-selected {
+            border: 2px solid #f90657;
+            background-color: rgba(249, 6, 87, 0.1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header & Logo -->
+<header class="flex flex-col items-center pt-8 pb-4 px-6">
+<div class="w-32 h-12 bg-contain bg-center bg-no-repeat mb-6" data-alt="Buum Balloon brand logo centered" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD9RKxnTk7cgM-G_--vUeNsKWOfoey--xnXv_0_r0TrS_-bo8MZywDVPU2H1VdlQJzXZDBXj33TEOPsLLDLXKLqS5QE6NElhNRIIrLF3g8NsJHCxtDxkwwtd28mCQnM6Wef0e4SJuBsX6wQ-kMptvGA11KwJ3LDrQ5X_JyR3m7Jf22slvWtz--LRrJkOi1JZks5bZWLi6wAE5Muf8pkh29KoJSHPEZ8kqxmKt20WrxThTvJTJEPKsY6dyJjTmTt6Gz3pari8XE6rg');">
+</div>
+<!-- Progress Bar -->
+<div class="w-full max-w-md">
+<div class="flex justify-between items-end mb-2">
+<span class="text-xs font-bold uppercase tracking-widest text-primary">Passo 4 de 5</span>
+<span class="text-xs font-medium opacity-70">80% concluído</span>
+</div>
+<div class="h-2 w-full bg-primary/20 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-500" style="width: 80%;"></div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow flex flex-col items-center px-6 pt-10 pb-32 w-full max-w-md mx-auto">
+<div class="text-center mb-10">
+<h1 class="text-3xl md:text-4xl font-bold leading-tight mb-4 dark:text-white">
+                Onde será a festa?
+            </h1>
+<p class="text-base text-slate-600 dark:text-slate-400 font-medium">
+                Isso nos ajuda a sugerir a melhor logística.
+            </p>
+</div>
+<!-- Options Grid -->
+<div class="grid grid-cols-1 gap-4 w-full">
+<!-- Option 1: Escola -->
+<button class="option-card group relative flex flex-col items-center justify-center p-8 bg-white dark:bg-primary/5 border-2 border-slate-200 dark:border-primary/20 rounded-xl transition-all hover:border-primary">
+<div class="size-16 mb-4 flex items-center justify-center rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-4xl">school</span>
+</div>
+<span class="text-xl font-bold dark:text-white">Escola</span>
+<div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+</button>
+<!-- Option 2: Casa / Salão -->
+<button class="option-card group relative flex flex-col items-center justify-center p-8 bg-white dark:bg-primary/5 border-2 border-slate-200 dark:border-primary/20 rounded-xl transition-all hover:border-primary">
+<div class="size-16 mb-4 flex items-center justify-center rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-4xl">home</span>
+</div>
+<span class="text-xl font-bold dark:text-white">Casa / Salão</span>
+<div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+</button>
+</div>
+</main>
+<!-- Fixed Bottom Action & Footer -->
+<footer class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-background-dark/90 backdrop-blur-md border-t border-slate-200 dark:border-primary/10 px-6 pt-4 pb-6 z-50">
+<div class="max-w-md mx-auto flex flex-col items-center gap-4">
+<button class="w-full py-4 bg-primary hover:bg-primary/90 text-white font-bold text-lg rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
+                Continuar
+            </button>
+<div class="flex flex-col items-center text-[10px] text-slate-500 dark:text-slate-500 tracking-tight font-medium uppercase">
+<span>CNPJ 44.081.435/0001-83</span>
+<span>Todos os direitos reservados © 2026</span>
+</div>
+</div>
+</footer>
+<!-- Safe area for scrolling -->
+<div class="h-24"></div>
+</body></html>

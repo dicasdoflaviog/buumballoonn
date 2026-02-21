@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-coral: #F47C6C;
+  --primary-green: #1E9E55;
+  --green-hover: #168347;
+  --background-main: #F9F6F4;
+  --text-dark: #1A1A1A;
+  --text-muted: #6B7280;
+
+  /* Compatibilidade com variáveis legadas se existirem */
+  --background: var(--background-main);
+  --foreground: var(--text-dark);
+  --primary: var(--primary-coral);
+}
+
+/* Modo escuro desativado - forçando padrões claros */
+body {
+  color: var(--text-dark);
+  background-color: var(--background-main) !important;
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100dvh;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, #F47C6C44 10%, #F47C6C44 90%, transparent);
+  z-index: 0;
+}
+
+/* Custom animations if needed */
+@keyframes progressBar {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-progress {
+  animation: progressBar 3s linear forwards;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

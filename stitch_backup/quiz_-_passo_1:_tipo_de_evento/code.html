@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html class="" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Planejador de Festas - Chat Flow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff9289", "background-light": "#f8f6f5", "background-dark": "#23100f", "bubble-ai": "#2d161d", "bubble-user": "#f90657"}, fontFamily: {display: "Montserrat"}, borderRadius: {DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px"}}}};</script>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            min-height: 100dvh;
+        }
+        .timeline-line {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, #f9065744 10%, #f9065744 90%, transparent);
+            z-index: 0;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 flex flex-col">
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10">
+<div class="flex items-center justify-between p-4 max-w-md mx-auto w-full">
+<button class="p-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex-1 flex justify-center">
+<img alt="Logo" class="h-8 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVZ0QBEr29qXakr6OW-pFa53QnQkHCUjAT5R1IeMJjrRm5VYmvjuwk4kTqJTcIXHMvO6igWQ_Yzn1MAbOt6NPDKK75OSXz8VElJp8MnnZy0m6BBIN8jdm71B2MZzO72VSsQTw7KEgRZFUZ6uSDlblzQyS9Bx3J-0V0GO0Sa0MdKzO8yIToeDzaUUZgP2SSmqqxrQDG3CWtiVMyzpmLUQXSlbuvF3fXcMba43_qjEBqYIVWsRnK4EX6MfdJXniA5qpG_iajSroPpg"/>
+</div>
+<button class="p-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="max-w-md mx-auto px-4 pb-2">
+<div class="h-1 w-full bg-primary/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-500" style="width: 20%;"></div>
+</div>
+</div>
+</header>
+<main class="flex-1 w-full max-w-md mx-auto px-4 pt-6 pb-40 relative">
+<div class="timeline-line"></div>
+<div class="flex flex-col gap-8 relative z-10">
+<div class="flex flex-col gap-2 items-start max-w-[85%]">
+<div class="flex items-center gap-2 mb-1">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-white text-sm">auto_awesome</span>
+</div>
+<span class="text-xs font-bold uppercase tracking-widest text-primary/80">Assistente IA</span>
+</div>
+<div class="bg-white dark:bg-bubble-ai p-4 rounded-2xl rounded-tl-none border border-primary/10 shadow-sm">
+<p class="text-lg font-medium leading-tight dark:text-white">
+                    Olá! Sou seu assistente de eventos. Vamos planejar algo incrível?
+                </p>
+</div>
+</div>
+<div class="flex flex-col gap-2 items-start max-w-[85%]">
+<div class="bg-white dark:bg-bubble-ai p-4 rounded-2xl rounded-tl-none border border-primary/10 shadow-sm">
+<p class="text-xl font-bold dark:text-white mb-1">
+                    Que tipo de festa você vai fazer?
+                </p>
+<p class="text-sm text-slate-500 dark:text-slate-400">
+                    Vamos começar entendendo o seu momento.
+                </p>
+</div>
+</div>
+<div class="flex flex-col gap-3 items-end w-full pl-10">
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1 mr-2">Selecione uma opção</span>
+<div class="grid grid-cols-1 gap-3 w-full">
+<label class="group relative flex items-center gap-4 p-4 cursor-pointer rounded-2xl border-2 border-primary bg-primary/10 shadow-[0_4px_15px_rgba(249,6,87,0.15)] transition-all">
+<div class="w-10 h-10 flex items-center justify-center text-2xl bg-white/10 rounded-xl">🎈</div>
+<div class="flex-1">
+<p class="font-bold text-base dark:text-white">Aniversário infantil</p>
+<p class="text-xs text-primary/70">Celebração para os pequenos</p>
+</div>
+<input checked="" class="hidden" name="party_type" type="radio"/>
+<div class="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center">
+<div class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+</div>
+</label>
+<label class="group relative flex items-center gap-4 p-4 cursor-pointer rounded-2xl border-2 border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:border-primary/40 transition-all">
+<div class="w-10 h-10 flex items-center justify-center text-2xl bg-white/5 rounded-xl">🎉</div>
+<div class="flex-1">
+<p class="font-bold text-base dark:text-white">Aniversário adulto</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Festa para maiores de 18</p>
+</div>
+<input class="hidden" name="party_type" type="radio"/>
+</label>
+<label class="group relative flex items-center gap-4 p-4 cursor-pointer rounded-2xl border-2 border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:border-primary/40 transition-all">
+<div class="w-10 h-10 flex items-center justify-center text-2xl bg-white/5 rounded-xl">👶</div>
+<div class="flex-1">
+<p class="font-bold text-base dark:text-white">Chá revelação / bebê</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Momento com a família</p>
+</div>
+<input class="hidden" name="party_type" type="radio"/>
+</label>
+<label class="group relative flex items-center gap-4 p-4 cursor-pointer rounded-2xl border-2 border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:border-primary/40 transition-all">
+<div class="w-10 h-10 flex items-center justify-center text-2xl bg-white/5 rounded-xl">🏫</div>
+<div class="flex-1">
+<p class="font-bold text-base dark:text-white">Evento escolar</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Formatura ou reunião</p>
+</div>
+<input class="hidden" name="party_type" type="radio"/>
+</label>
+<label class="group relative flex items-center gap-4 p-4 cursor-pointer rounded-2xl border-2 border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:border-primary/40 transition-all">
+<div class="w-10 h-10 flex items-center justify-center text-2xl bg-white/5 rounded-xl">✨</div>
+<div class="flex-1">
+<p class="font-bold text-base dark:text-white">Outro</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Outros tipos de celebração</p>
+</div>
+<input class="hidden" name="party_type" type="radio"/>
+</label>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-0 left-0 right-0 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-lg border-t border-primary/10 z-50">
+<div class="max-w-md mx-auto p-4 flex flex-col gap-4">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-2xl shadow-lg shadow-primary/30 transition-all text-lg active:scale-[0.98] flex items-center justify-center gap-2">
+            Confirmar Escolha
+            <span class="material-symbols-outlined text-xl">send</span>
+</button>
+<footer class="text-center pb-2">
+<p class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-medium">
+                CNPJ 44.081.435/0001-83 | © 2026 Todos os direitos reservados
+            </p>
+</footer>
+</div>
+</div>
+</body></html>

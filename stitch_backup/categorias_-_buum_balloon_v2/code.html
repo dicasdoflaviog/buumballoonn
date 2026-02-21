@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html class="" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Buum Balloon - Seleção de Pacote</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff9289", "background-light": "#f8f6f5", "background-dark": "#23100f"}, fontFamily: {display: "Montserrat"}, borderRadius: {DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .active-card {
+            border: 2px solid #f90657;
+            background: rgba(249, 6, 87, 0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display">
+<!-- Header Navigation -->
+<header class="sticky top-0 z-20 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10 px-4 py-4">
+<div class="max-w-md mx-auto flex items-center justify-between"><button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary/10 transition-colors"><span class="material-symbols-outlined">arrow_back</span></button><img alt="Buum Balloon Logo" class="h-12 w-auto mx-auto" src="{{DATA:IMAGE:IMAGE_12}}"/><div class="w-10"></div></div>
+</header>
+<main class="flex-1 max-w-md mx-auto w-full px-4 pb-8">
+<!-- Progress Bar -->
+<div class="mt-6 mb-8">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-medium text-primary uppercase tracking-wider">Passo 4 de 5</span>
+<span class="text-xs opacity-60">Quase lá!</span>
+</div>
+<div class="h-2 w-full bg-primary/20 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-[80%]"></div>
+</div>
+</div>
+<!-- Hero Text -->
+<div class="text-center mb-8">
+<h2 class="text-3xl font-bold leading-tight mb-2">O plano ideal para transformar sua festa.</h2>
+<p class="text-slate-600 dark:text-slate-400">Escolha a experiência que mais combina com seu momento.</p>
+</div>
+<!-- Package Cards Container -->
+<div class="space-y-4">
+<!-- ESSENCIAL Card -->
+<div class="glass-card rounded-xl p-5 relative overflow-hidden transition-all hover:scale-[1.02] cursor-pointer">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-xl font-bold">ESSENCIAL</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">O básico que encanta.</p>
+</div>
+<div class="text-right">
+<span class="text-xs block opacity-60">A partir de</span>
+<span class="text-2xl font-bold text-primary">R$ 89</span>
+</div>
+</div>
+<div class="space-y-2 mb-6">
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<span>Balões látex padrão</span>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<span>Fitilho básico</span>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<span>1 dia de flutuação</span>
+</div>
+</div>
+<div class="w-full h-24 rounded-lg bg-cover bg-center mb-2" data-alt="Simples arranjo de balões rosa e branco" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBZRG8fbFmGhJF738eAHo32D67n4KLwgJIuzS7w9YXYG8ligXU8FQoFqSr5tSytgy6W7J-0MTRBajWeCWOtiTPSKjA84HDvXGN-0t0qmatGNvtGrVe3AzYsyck0CNSlTE0o1tjAv-bXY_yUTn2c57XsUjm7oGaprBjVqB7zML5AwtfjQK1vbDhSkmeAQMThuFO_N3T-0KhNPZi2-bbEsQZI2Ct1oK0gL9gEDwVFwW-LVqTRojk0raIgneaq2xooS3Cz8hVvO3vvxg');"></div>
+</div>
+<!-- CELEBRA Card (Highlighted) -->
+<div class="active-card rounded-xl p-5 relative overflow-hidden transition-all hover:scale-[1.02] cursor-pointer ring-2 ring-primary">
+<div class="absolute top-0 right-0 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-widest">
+                    Melhor Escolha
+                </div>
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-xl font-bold">CELEBRA</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">O mais escolhido.</p>
+</div>
+<div class="text-right">
+<span class="text-xs block opacity-60">A partir de</span>
+<span class="text-2xl font-bold text-primary">R$ 129</span>
+</div>
+</div>
+<div class="space-y-2 mb-6">
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<span>Balões metálicos inclusos</span>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<span>Texto personalizado</span>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<span>3 dias de flutuação</span>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<span>Cores personalizadas</span>
+</div>
+</div>
+<div class="w-full h-32 rounded-lg bg-cover bg-center mb-2" data-alt="Arranjo festivo de balões metálicos e personalizados" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBLKaDE04cDWfGg0Y24ISItycfk4mp70_yiDkaEcDXsLhQEXfMwIngEWzUvRdXy7uEPolXfkMIsE2fudmElerfzQYqFW0HoGmyUR7ZBipnMfPYQFMA-NbLhleJSNDtkANjQLOw6VuzmeGksWEntnOtqqQe63bFa8jZZOkxI0kLI2pdhOPu1msp2xtv21_VHzpBh_y8Nu2rteX1IZJH1gK3Mhk5a0HMab1siDurFtL5x1IL3SPQFKPfT1mMEJTXLcdErw54kKEpnIg');"></div>
+</div>
+<!-- IMPACTO Card -->
+<div class="glass-card rounded-xl p-5 relative overflow-hidden transition-all hover:scale-[1.02] cursor-pointer">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-xl font-bold">IMPACTO</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Momentos inesquecíveis.</p>
+</div>
+<div class="text-right">
+<span class="text-xs block opacity-60">A partir de</span>
+<span class="text-2xl font-bold text-primary">R$ 199</span>
+</div>
+</div>
+<div class="space-y-2 mb-6">
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<span>Balões Gigantes (Organic)</span>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<span>Texturas premium e brilho</span>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<span>Pesos decorativos exclusivos</span>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<span>Entrega prioritária</span>
+</div>
+</div>
+<div class="w-full h-24 rounded-lg bg-cover bg-center mb-2" data-alt="Grande escultura de balões orgânicos de luxo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDjiPUzyjaG6cMIQaavbfPs8u1-8ZGqAK8PFUwdED4lXDcSSZX3Xkb66pQ1RSx8GWxaWfpHwU1RzWuh5lgdBM257pNwjS6wn5olgsLwixDFCr8F43bdwH8pdjEB0jt4af0MLGEvOvZ637pwBU8mcEKhRiToXUrovqloYPbzUbBYap9RiA5tVSW_4zSOp1gBJbxGy0WNtaSD_YwFfOL4wC4dNn9yLffsa1nrTF9rIbDh_igb__3LZtXpsy_SaI-8vT5XKZrrFSiX0w');"></div>
+</div>
+</div>
+</main>
+<!-- Sticky Footer -->
+<footer class="left-0 right-0 bg-background-light dark:bg-background-dark border-t border-primary/10 p-4 z-30 mt-auto">
+<div class="max-w-md mx-auto space-y-4">
+<button class="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg flex items-center justify-center gap-2 shadow-lg shadow-primary/25 active:scale-95 transition-transform">
+                Continuar
+                <span class="material-symbols-outlined">chevron_right</span>
+</button>
+<!-- Bottom Nav Bar -->
+<div class="pt-8 pb-4 text-center border-t border-primary/5 mt-4"><p class="text-[10px] text-slate-500 uppercase tracking-widest mb-1">© 2024 Buum Balloon. Todos os direitos reservados.</p><p class="text-[10px] text-slate-500">CNPJ: 00.000.000/0001-00</p></div></div>
+</footer>
+</body></html>
