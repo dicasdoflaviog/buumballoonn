@@ -36,8 +36,8 @@ export default function GestaoProdutos() {
 
     async function fetchProdutos() {
         setLoading(true);
-        const { data, error } = await supabase
-            .from('produtos')
+        const { data, error } = await (supabase
+            .from('produtos' as any) as any)
             .select('*')
             .order('created_at', { ascending: false });
 
@@ -50,14 +50,14 @@ export default function GestaoProdutos() {
         setLoading(true);
 
         if (editingProduto) {
-            const { error } = await supabase
-                .from('produtos')
+            const { error } = await (supabase
+                .from('produtos' as any) as any)
                 .update(formData)
                 .eq('id', editingProduto.id);
             if (!error) setIsModalOpen(false);
         } else {
-            const { error } = await supabase
-                .from('produtos')
+            const { error } = await (supabase
+                .from('produtos' as any) as any)
                 .insert([formData]);
             if (!error) setIsModalOpen(false);
         }
@@ -138,7 +138,7 @@ export default function GestaoProdutos() {
                                     </button>
                                     <button
                                         onClick={async () => {
-                                            await supabase.from('produtos').update({ ativo: !p.ativo }).eq('id', p.id);
+                                            await (supabase.from('produtos' as any) as any).update({ ativo: !p.ativo }).eq('id', p.id);
                                             fetchProdutos();
                                         }}
                                         className={`w-14 rounded-2xl flex items-center justify-center transition-all ${p.ativo ? 'text-slate-400 bg-slate-50 hover:bg-slate-100' : 'text-green-500 bg-green-50'}`}

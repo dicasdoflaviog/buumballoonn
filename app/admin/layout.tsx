@@ -30,7 +30,7 @@ export default function AdminLayout({
             }
 
             // Check admin role
-            const { data: isAdmin } = await supabase.rpc('is_admin');
+            const { data: isAdmin } = await (supabase.rpc('is_admin') as any);
             if (!isAdmin) {
                 if (pathname !== "/admin" && pathname !== "/admin/signup") {
                     router.push("/admin");
@@ -94,8 +94,8 @@ export default function AdminLayout({
                             key={item.path}
                             href={item.path}
                             className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all ${pathname === item.path
-                                    ? "bg-primary text-white shadow-lg shadow-primary/20"
-                                    : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                                ? "bg-primary text-white shadow-lg shadow-primary/20"
+                                : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                                 }`}
                         >
                             <span className="material-symbols-outlined text-xl">{item.icon}</span>

@@ -19,15 +19,15 @@ export default function ConfigSettings() {
     }, []);
 
     async function fetchConfigs() {
-        const { data, error } = await supabase.from('configuracoes_gerais').select('*');
+        const { data, error } = await (supabase.from('configuracoes_gerais' as any) as any).select('*');
         if (!error && data) setConfigs(data);
         setLoading(false);
     }
 
     async function handleSave(chave: string, valor: any) {
         setSaving(true);
-        const { error } = await supabase
-            .from('configuracoes_gerais')
+        const { error } = await (supabase
+            .from('configuracoes_gerais' as any) as any)
             .update({ valor, updated_at: new Date().toISOString() })
             .eq('chave', chave);
 
